@@ -3065,10 +3065,6 @@ idRenderSystemLocal::GetWidth
 */
 int idRenderSystemLocal::GetWidth() const
 {
-	if( glConfig.stereo3Dmode == STEREO3D_SIDE_BY_SIDE || glConfig.stereo3Dmode == STEREO3D_SIDE_BY_SIDE_COMPRESSED )
-	{
-		return glConfig.nativeScreenWidth >> 1;
-	}
 	return glConfig.nativeScreenWidth;
 }
 
@@ -3082,16 +3078,6 @@ int idRenderSystemLocal::GetHeight() const
 	if( glConfig.stereo3Dmode == STEREO3D_HDMI_720 )
 	{
 		return 720;
-	}
-	extern idCVar stereoRender_warp;
-	if( glConfig.stereo3Dmode == STEREO3D_SIDE_BY_SIDE && stereoRender_warp.GetBool() )
-	{
-		// for the Rift, render a square aspect view that will be symetric for the optics
-		return glConfig.nativeScreenWidth >> 1;
-	}
-	if( glConfig.stereo3Dmode == STEREO3D_INTERLACED || glConfig.stereo3Dmode == STEREO3D_TOP_AND_BOTTOM_COMPRESSED )
-	{
-		return glConfig.nativeScreenHeight >> 1;
 	}
 	return glConfig.nativeScreenHeight;
 }
@@ -3181,13 +3167,14 @@ idRenderSystemLocal::GetPixelAspect
 */
 float idRenderSystemLocal::GetPixelAspect() const
 {
+	extern idCVar stereoRender_warp;
 	switch( glConfig.stereo3Dmode )
 	{
-		case STEREO3D_SIDE_BY_SIDE_COMPRESSED:
-			return glConfig.pixelAspect * 2.0f;
-		case STEREO3D_TOP_AND_BOTTOM_COMPRESSED:
-		case STEREO3D_INTERLACED:
-			return glConfig.pixelAspect * 0.5f;
+		case STEREO3D_SIDE_BY_SIDE:
+			if ( stereoRender_warp.GetBool() )
+			{
+				return 1.f;
+			}
 		default:
 			return glConfig.pixelAspect;
 	}

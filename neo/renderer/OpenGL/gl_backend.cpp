@@ -468,14 +468,14 @@ void RB_StereoRenderExecuteBackEndCommands( const emptyCommand_t* const allCmds 
 			stereoRenderImages[0]->Bind();
 			GL_SelectTexture( 1 );
 			stereoRenderImages[1]->Bind();
-			GL_ViewportAndScissor( 0, 0, renderSystem->GetWidth(), renderSystem->GetHeight() );
+			GL_ViewportAndScissor( 0, 0, renderSystem->GetWidth()/2, renderSystem->GetHeight() );
 			RB_DrawElementsWithCounters( &backEnd.unitSquareSurface );
 			
 			GL_SelectTexture( 0 );
 			stereoRenderImages[1]->Bind();
 			GL_SelectTexture( 1 );
 			stereoRenderImages[0]->Bind();
-			GL_ViewportAndScissor( renderSystem->GetWidth(), 0, renderSystem->GetWidth(), renderSystem->GetHeight() );
+			GL_ViewportAndScissor( renderSystem->GetWidth()/2, 0, renderSystem->GetWidth()/2, renderSystem->GetHeight() );
 			RB_DrawElementsWithCounters( &backEnd.unitSquareSurface );
 			break;
 			
@@ -484,14 +484,14 @@ void RB_StereoRenderExecuteBackEndCommands( const emptyCommand_t* const allCmds 
 			stereoRenderImages[0]->Bind();
 			GL_SelectTexture( 0 );
 			stereoRenderImages[1]->Bind();
-			GL_ViewportAndScissor( 0, 0, renderSystem->GetWidth(), renderSystem->GetHeight() );
+			GL_ViewportAndScissor( 0, 0, renderSystem->GetWidth(), renderSystem->GetHeight()/2 );
 			RB_DrawElementsWithCounters( &backEnd.unitSquareSurface );
 			
 			GL_SelectTexture( 1 );
 			stereoRenderImages[1]->Bind();
 			GL_SelectTexture( 0 );
 			stereoRenderImages[0]->Bind();
-			GL_ViewportAndScissor( 0, renderSystem->GetHeight(), renderSystem->GetWidth(), renderSystem->GetHeight() );
+			GL_ViewportAndScissor( 0, renderSystem->GetHeight()/2, renderSystem->GetWidth(), renderSystem->GetHeight()/2 );
 			RB_DrawElementsWithCounters( &backEnd.unitSquareSurface );
 			break;
 			
@@ -507,7 +507,7 @@ void RB_StereoRenderExecuteBackEndCommands( const emptyCommand_t* const allCmds 
 			glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST );
 			glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST );
 			
-			GL_ViewportAndScissor( 0, 0, renderSystem->GetWidth(), renderSystem->GetHeight() * 2 );
+			GL_ViewportAndScissor( 0, 0, renderSystem->GetWidth(), renderSystem->GetHeight() );
 			renderProgManager.BindShader_StereoInterlace();
 			RB_DrawElementsWithCounters( &backEnd.unitSquareSurface );
 			
