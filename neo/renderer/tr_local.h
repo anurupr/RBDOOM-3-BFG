@@ -1146,6 +1146,7 @@ extern idCVar vr_forwardOnly;
 extern idCVar vr_turning;
 extern idCVar vr_responseCurve;
 extern idCVar vr_moveMode;
+extern idCVar vr_moveSpeed;
 
 /*
 ====================================================================
@@ -1568,7 +1569,9 @@ void VR_ShakeRightController();
 bool VR_GetLeftControllerAxis(idVec2 &axis);
 bool VR_GetRightControllerAxis(idVec2 &axis);
 bool VR_LeftControllerWasPressed();
+bool VR_RightControllerWasPressed();
 bool VR_LeftControllerIsPressed();
+bool VR_RightControllerIsPressed();
 
 const idVec3 &VR_GetSeatedOrigin();
 const idMat3 &VR_GetSeatedAxis();

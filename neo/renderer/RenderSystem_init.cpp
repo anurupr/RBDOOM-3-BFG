@@ -286,17 +286,18 @@ idCVar r_exposure( "r_exposure", "0.5", CVAR_ARCHIVE | CVAR_RENDERER | CVAR_FLOA
 // RB end
 
 idCVar vr_resolutionScale( "vr_resolutionScale", "1", CVAR_RENDERER | CVAR_ARCHIVE | CVAR_FLOAT, "hmd resolution scaling, restart required" );
-idCVar vr_playerHeightCM( "vr_playerHeightCM", "171", CVAR_RENDERER | CVAR_ARCHIVE | CVAR_FLOAT, "player height for vr in centimeters" );
+idCVar vr_playerHeightCM( "vr_playerHeightCM", "177", CVAR_RENDERER | CVAR_ARCHIVE | CVAR_FLOAT, "player height for vr in centimeters" );
 idCVar vr_aimLook( "vr_aimLook", "0", CVAR_RENDERER | CVAR_ARCHIVE | CVAR_BOOL, "aim where you look" );
 idCVar vr_seated( "vr_seated", "0", CVAR_RENDERER | CVAR_ARCHIVE | CVAR_BOOL, "seated mode" );
 idCVar vr_forceGamepad( "vr_forceGamepad", "0", CVAR_RENDERER | CVAR_ARCHIVE | CVAR_BOOL, "force using the gamepad to control weapons" );
-idCVar vr_knockbackScale( "vr_knockbackScale", "1", CVAR_RENDERER | CVAR_ARCHIVE | CVAR_FLOAT, "how much knockback affects you" );
+idCVar vr_knockbackScale( "vr_knockbackScale", "0.1", CVAR_RENDERER | CVAR_ARCHIVE | CVAR_FLOAT, "how much knockback affects you" );
 idCVar vr_strafing( "vr_strafing", "1", CVAR_ARCHIVE | CVAR_BOOL, "enable/disable left control strafing" );
 idCVar vr_forwardOnly( "vr_forwardOnly", "0", CVAR_ARCHIVE | CVAR_BOOL, "left touchpad only moves forward" );
 idCVar vr_maxRadius( "vr_maxRadius", "0.9", CVAR_ARCHIVE | CVAR_FLOAT, "smaller values make it easier to hit max movement speed" );
 idCVar vr_turning( "vr_turning", "0", CVAR_ARCHIVE | CVAR_BOOL, "0 no turning | 1 touch turning" );
 idCVar vr_responseCurve( "vr_responseCurve", "0", CVAR_ARCHIVE | CVAR_FLOAT, "interpoloate between linear and square curves, -1 for inverse square" );
-idCVar vr_moveMode( "vr_moveMode", "0", CVAR_ARCHIVE | CVAR_INTEGER, "	0 touch walk | 1 touch walk & hold run | 2 touch walk & click run | 3 click walk | 4 click walk & hold run | 5 click walk & double click run | 6 hold walk" );
+idCVar vr_moveMode( "vr_moveMode", "2", CVAR_ARCHIVE | CVAR_INTEGER, "	0 touch walk | 1 touch walk & hold run | 2 touch walk & click run | 3 click walk | 4 click walk & hold run | 5 click walk & double click run | 6 hold walk" );
+idCVar vr_moveSpeed("vr_moveSpeed", "0.5", CVAR_ARCHIVE | CVAR_FLOAT, "Movement speed is multiplied by this value. 1 is normal speed. Set to less than 1 for slower, greater than 1 for faster movement.");
 
 const char* fileExten[3] = { "tga", "png", "jpg" };
 const char* envDirection[6] = { "_px", "_nx", "_py", "_ny", "_pz", "_nz" };

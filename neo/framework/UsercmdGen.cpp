@@ -1067,15 +1067,15 @@ idUsercmdGenLocal::VRControlMove
 void idUsercmdGenLocal::VRControlMove()
 {
 	idVec2 axis;
-	if( VR_GetLeftControllerAxis(axis) )
+	if( VR_GetRightControllerAxis(axis) )
 	{
 		if( !vrWasClicked )
 		{
-			vrWasClicked = VR_LeftControllerWasPressed();
+			vrWasClicked = VR_RightControllerWasPressed();
 		}
 		else if ( !vrWasDoubleClicked )
 		{
-			vrWasDoubleClicked = VR_LeftControllerWasPressed();
+			vrWasDoubleClicked = VR_RightControllerWasPressed();
 		}
 
 		const int moveMode = vr_moveMode.GetInteger();
@@ -1088,7 +1088,7 @@ void idUsercmdGenLocal::VRControlMove()
 			break;
 		case 1:
 			move = true;
-			if( VR_LeftControllerIsPressed() )
+			if( VR_RightControllerIsPressed() )
 			{
 				cmd.buttons |= BUTTON_RUN;
 			}
@@ -1111,7 +1111,7 @@ void idUsercmdGenLocal::VRControlMove()
 			{
 				move = true;
 			}
-			if( VR_LeftControllerIsPressed() )
+			if (VR_RightControllerIsPressed())
 			{
 				cmd.buttons |= BUTTON_RUN;
 			}
@@ -1127,7 +1127,7 @@ void idUsercmdGenLocal::VRControlMove()
 			}
 			break;
 		case 6:
-			if( VR_LeftControllerIsPressed() )
+			if (VR_RightControllerIsPressed())
 			{
 				move = true;
 			}
@@ -1136,6 +1136,8 @@ void idUsercmdGenLocal::VRControlMove()
 
 		if ( move )
 		{
+			const float moveSpeed = vr_moveSpeed.GetFloat();
+
 			if( vr_forwardOnly.GetBool() )
 			{
 				cmd.forwardmove = idMath::ClampChar( cmd.forwardmove + KEY_MOVESPEED );
@@ -1152,10 +1154,10 @@ void idUsercmdGenLocal::VRControlMove()
 					len += dif * response;
 					axis *= len;
 				}
-				cmd.forwardmove = idMath::ClampChar( cmd.forwardmove + KEY_MOVESPEED * axis.y );
+				cmd.forwardmove = idMath::ClampChar(cmd.forwardmove + KEY_MOVESPEED * axis.y * moveSpeed);
 				if( vr_strafing.GetBool() )
 				{
-					cmd.rightmove = idMath::ClampChar( cmd.rightmove + KEY_MOVESPEED * axis.x );
+					cmd.rightmove = idMath::ClampChar(cmd.rightmove + KEY_MOVESPEED * axis.x * moveSpeed);
 				}
 			}
 		}
@@ -1165,7 +1167,7 @@ void idUsercmdGenLocal::VRControlMove()
 		vrWasClicked = false;
 		vrWasDoubleClicked = false;
 	}
-	if( vr_turning.GetInteger() && VR_GetRightControllerAxis(axis) && fabs(axis.y) < 0.5 )
+	if( vr_turning.GetInteger() && VR_GetLeftControllerAxis(axis) && fabs(axis.y) < 0.5 )
 	{
 		const float yawSpeed =			joy_yawSpeed.GetFloat();
 		viewangles[YAW] += MS2SEC( pollTime - lastPollTime ) * -axis.x * yawSpeed;

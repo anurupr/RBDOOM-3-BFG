@@ -782,6 +782,7 @@ extern idMat3 g_SeatedAxis;
 extern idMat3 g_SeatedAxisInverse;
 
 bool g_vrLeftControllerWasPressed;
+bool g_vrRightControllerWasPressed;
 vr::VRControllerState_t g_vrLeftControllerState;
 vr::VRControllerState_t g_vrRightControllerState;
 
@@ -827,6 +828,7 @@ void VR_ClearEvents()
 	g_vrSysEventCount = 0;
 	g_vrJoyEventCount = 0;
 	g_vrLeftControllerWasPressed = false;
+	g_vrRightControllerWasPressed = false;
 }
 
 void VR_SysEventQue(sysEventType_t type, int value, int value2)
@@ -927,6 +929,20 @@ static void VR_GenButtonEvent(uint32_t button, bool left, bool pressed)
 			{
 				g_vrLeftControllerWasPressed = true;
 			}
+
+			if (g_vrLeftControllerState.rAxis[0].x < -0.4f)
+			{
+				VR_JoyEventQue(J_ACTION5, pressed); //  prev weapon
+			}
+			else if (g_vrLeftControllerState.rAxis[0].x > 0.4f)
+			{
+				VR_JoyEventQue(J_ACTION6, pressed); //  next weapon
+			}
+			else
+			{
+				VR_JoyEventQue(J_ACTION3, pressed); // reload weapon
+			}
+
 			//VR_JoyEventQue( J_AXIS_LEFT_TRIG, pressed? 255*128 : 0 ); // flashlight
 			//VR_JoyEventQue( J_ACTION7, pressed ); // run
 			//VR_SysEventQue( SE_KEY, K_JOY2, pressed ); // menu back
@@ -964,33 +980,12 @@ static void VR_GenButtonEvent(uint32_t button, bool left, bool pressed)
 		}
 		else
 		{
-			//VR_JoyEventQue( J_ACTION3, pressed ); // reload weapon
-			if( vr_turning.GetInteger() == 0 )
+
+			if (pressed)
 			{
-				if (g_vrRightControllerState.rAxis[0].x < -0.4f)
-				{
-					VR_JoyEventQue( J_ACTION5, pressed ); //  prev weapon
-				}
-				else if (g_vrRightControllerState.rAxis[0].x > 0.4f)
-				{
-					VR_JoyEventQue( J_ACTION6, pressed ); //  next weapon
-				}
-				else
-				{
-					VR_JoyEventQue( J_ACTION3, pressed ); // reload weapon
-				}
+				g_vrRightControllerWasPressed = true;
 			}
-			else
-			{
-				if (g_vrRightControllerState.rAxis[0].y < -0.5f)
-				{
-					VR_JoyEventQue( J_ACTION5, pressed ); //  prev weapon
-				}
-				else if (g_vrRightControllerState.rAxis[0].y > 0.5f)
-				{
-					VR_JoyEventQue( J_ACTION6, pressed ); //  next weapon
-				}
-			}
+
 			VR_SysEventQue( SE_KEY, K_JOY1, pressed ); // menu select
 		}
 		break;
@@ -1404,10 +1399,21 @@ bool VR_LeftControllerWasPressed()
 	return g_vrLeftControllerWasPressed;
 }
 
+bool VR_RightControllerWasPressed()
+{
+	return g_vrRightControllerWasPressed;
+}
+
 bool VR_LeftControllerIsPressed()
 {
 	uint64_t mask = vr::ButtonMaskFromId(vr::k_EButton_SteamVR_Touchpad);
 	return ( g_vrLeftControllerState.ulButtonPressed & mask ) != 0;
+}
+
+bool VR_RightControllerIsPressed()
+{
+	uint64_t mask = vr::ButtonMaskFromId(vr::k_EButton_SteamVR_Touchpad);
+	return (g_vrRightControllerState.ulButtonPressed & mask) != 0;
 }
 
 const idVec3 &VR_GetSeatedOrigin()
